@@ -8,7 +8,7 @@ slisse_height = 14;
 slisse_depth = 33;
 
 spor_tykkelse = 1.6;
-spor_dybde = 3.8;
+spor_dybde = 3.4;
 
 SlisseSpor_bredde = 5.5;
 
@@ -30,17 +30,16 @@ module Spor (tykkelse, dybde) {
 
 module SlisseSpor (bredde) {
     height = cube_height - slisse_height + 5;
-    translate_y = cube_depth/2 - slisse_depth / 2;
-    translate([0, bredde/2 + 0.3, -slisse_height/2]) {
+    slissespor_length = slisse_depth-7;
+    translate_y = slissespor_length / 2;
+    translate([0,translate_y,0]) {
         cylinder(h = height, d = bredde, center = true);
     }
-    translate([0, translate_y, -slisse_height/2]) {
-        cube([bredde, slisse_depth - 10, height], center = true);
-    }
-    translate([0, bredde/2 + slisse_depth - 10.5, -slisse_height/2]) {
+    cube([bredde, slissespor_length, height], center = true);
+    translate([0,-translate_y,0]) {
         cylinder(h = height, d = bredde, center = true);
     }
-};
+}
 
 module Cutaway(vinkel = 45, translate_y = 0, translate_z = 0, translate_x = 0, vector = [1,0,0]) {
     rotate(a=-vinkel, v=vector) {
@@ -56,14 +55,16 @@ difference() {
     translate([0, 0, ((cube_height - slisse_height) / 2) + 0.01]) {
         Slisse(slisse_diam, slisse_height, slisse_depth);
     }
-    SlisseSpor(bredde = SlisseSpor_bredde);
+    translate([0, 10, -cube_height/2 + 0.1]) {
+        SlisseSpor(bredde = SlisseSpor_bredde);
+    }
     Cutaway(vinkel=15, translate_y = cube_depth / 2 - 20, translate_z = 12);
     Cutaway(vinkel=-45, translate_y = -40, translate_z = 34);
     Cutaway(translate_y = -30, translate_z = 30, translate_x = -10, vector = [0,1,0]);
     Cutaway(vinkel = -45, translate_y = -30, translate_z = 30, translate_x = 20, vector = [0,1,0]);
 };
 difference() {
-   Spor(tykkelse = spor_tykkelse, dybde = spor_dybde);
+   #Spor(tykkelse = spor_tykkelse, dybde = spor_dybde);
     translate([0, 15, -10]) {
         cube([SlisseSpor_bredde,15,10], center = true);
     }

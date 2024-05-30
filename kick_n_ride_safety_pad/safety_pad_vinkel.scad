@@ -1,6 +1,6 @@
 bredde = 18.4;
 hoyde = 9;
-diameter = 14;
+diameter = 16;
 diameter_hull = 5;
 
 module Base() {
